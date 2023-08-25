@@ -8,7 +8,8 @@ from rest_framework_simplejwt.views import (
 from .views import (
     HomeApiView, 
     UserViewSet, 
-    GroupViewSet
+    GroupViewSet,
+    GruPagamentoAPIView
 )
 
 router = routers.DefaultRouter()
@@ -17,6 +18,7 @@ router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
 
 urlpatterns = [
+    path('gru/pagamento/', GruPagamentoAPIView.as_view(), name='gru_pagamento'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
