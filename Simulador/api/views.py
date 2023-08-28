@@ -10,6 +10,13 @@ from .serializers import (
     GroupSerializer,
     GruPagamentoSerializer,
 )
+import uuid, string, random
+from datetime import datetime
+
+def gerar_string_alfanumerica(tamanho):
+    caracteres = string.ascii_letters + string.digits  # Letras maiúsculas, minúsculas e números
+    string_gerada = ''.join(random.choice(caracteres) for _ in range(tamanho))
+    return string_gerada
 
 class HomeApiView(APIView):
     def get(self, request, format=None):
@@ -38,4 +45,68 @@ class GruPagamentoAPIView(APIView):
     def post(self, request, format=None):
         serializer = GruPagamentoSerializer(data=request.data)
 
-        return Response(serializer.initial_data, status=HTTP_200_OK)
+        # Simule a criação de um ID único
+        id_pagamento = gerar_string_alfanumerica(22)
+        id_sessao = str(uuid.uuid4())
+
+        # Simule a data de criação como a data atual
+        data_criacao = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        # Construa a resposta desejada
+        response_data = {
+            "idPagamento": id_pagamento,
+            "dataCriacao": data_criacao,
+            "proximaUrl": f"https://valpagtesouro.tesouro.gov.br/#/pagamento?idSessao={id_sessao}",
+            "situacao": {
+                "codigo": "CRIADO"
+            }
+        }
+
+        # return Response(serializer.initial_data, status=HTTP_200_OK)
+        return Response(response_data, status=HTTP_200_OK)
+    
+class GruPagamentoNotificacaoAPIView(APIView):
+    def post(self, request, format=None):
+        # Verifica se o corpo da requisição está no formato esperado
+        expected_keys = [
+            "idPagamento",
+            "dataHora",
+        ]
+
+        for key in expected_keys:
+            if key not in request.data:
+                return Response(
+                    {"mensagem": f"{key} não encontrado no corpo da requisição."},
+                    status=HTTP_400_BAD_REQUEST,
+                )
+
+        # Construa a resposta desejada
+        response_data = {
+            "idPagamento": request.data.get('idPagamento'),
+            "dataHora": request.data.get('dataHora'),
+            "status": HTTP_200_OK
+        }
+
+        # return Response(serializer.initial_data, status=HTTP_200_OK)
+        return Response(response_data, status=HTTP_200_OK)
+    
+class GruPagamentoConsultaAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, id_pagamento, format=None):
+        data_criacao = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        # Construa a resposta desejada
+        response_data = {
+            "idPagamento": str(id_pagamento),
+            "tipoPagamentoEscolhido": "CARTAO_CREDITO",
+            "valor": 100,
+            "nomePSP": "Simulador PSP",
+            "transacaoPSP": "3djVYxnwfSIOUY61S0SsF",
+            "situacao": {
+                "codigo": "CONCLUIDO",
+                "data": data_criacao
+            }
+        }
+        # return Response(serializer.initial_data, status=HTTP_200_OK)
+        return Response(response_data, status=HTTP_200_OK)

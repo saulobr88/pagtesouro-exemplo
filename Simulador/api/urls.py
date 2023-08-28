@@ -9,7 +9,9 @@ from .views import (
     HomeApiView, 
     UserViewSet, 
     GroupViewSet,
-    GruPagamentoAPIView
+    GruPagamentoAPIView,
+    GruPagamentoNotificacaoAPIView,
+    GruPagamentoConsultaAPIView,
 )
 
 router = routers.DefaultRouter()
@@ -18,7 +20,9 @@ router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
 
 urlpatterns = [
-    path('gru/pagamento/', GruPagamentoAPIView.as_view(), name='gru_pagamento'),
+    path('gru/solicitacao-pagamento', GruPagamentoAPIView.as_view(), name='gru_pagamento'),
+    path('gru/pagamento/notificacao', GruPagamentoNotificacaoAPIView.as_view(), name='gru_pagamento_notificacao'),
+    path('gru/pagamentos/<str:id_pagamento>', GruPagamentoConsultaAPIView.as_view(), name='gru_pagamento_consulta'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
