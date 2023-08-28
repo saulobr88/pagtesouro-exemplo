@@ -8,7 +8,47 @@
     {% endblock %}
     
 </head>
-<body>
-    
+<body class="bg-cyan-400">
+    <nav class="p-5 bg-white shadow">
+        <div>
+            <span class="cursor-pointer">
+                <img class="h-5 inline" src="https://www.treinaweb.com.br/assets/images/treinaweb-logo@2x.webp" >
+            </span>
+        </div>
+
+        <div class="md:flex md:items-center">
+            <ul>
+                <li class="mx-4">
+                    <a href="#" class="text-xl hover:text-cyan-500 duration-500">Home</a>
+                </li>
+            </ul>
+            <ul>
+                <li class="mx-4">
+                    <a href="#" class="text-xl hover:text-cyan-500 duration-500">Service</a>
+                </li>
+            </ul>
+            <ul>
+                <li class="mx-4">
+                    <a href="#" class="text-xl hover:text-cyan-500 duration-500">About</a>
+                </li>
+            </ul>
+            <ul>
+                <li class="mx-4">
+                    <a href="#" class="text-xl hover:text-cyan-500 duration-500">Contact</a>
+                </li>
+            </ul>
+            <ul>
+                <li class="mx-4">
+                    <a href="#" class="text-xl hover:text-cyan-500 duration-500">Blog</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    {% block conteudo %}
+    Aqui vem o conteúdo principal
+    {% endblock %}
+    <!--LINK PARA ACESSAR O TAILWIND VIA CDN-->
+    <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>
