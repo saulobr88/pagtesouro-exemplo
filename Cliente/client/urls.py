@@ -6,10 +6,11 @@ from .views import (
     ExibirPagamentoView,
 )
 from .pagtesouro_service import PagTesouroService
+from .helper_service import HelperService
 
 urlpatterns = [
     path('', PaginaInicial.as_view(pagtesouro_servico=PagTesouroService()), name="index"),
-    path('create/', CadastrarPagamentoView.as_view(pagtesouro_servico=PagTesouroService()), name="create"),
+    path('create/', CadastrarPagamentoView.as_view(pagtesouro_servico=PagTesouroService(),helper_servico=HelperService()), name="create"),
     path('query/', ConsultarPagamentoView.as_view(pagtesouro_servico=PagTesouroService()), name="query"),
     path('<str:id_pagamento>/', ExibirPagamentoView.as_view(pagtesouro_servico=PagTesouroService()), name="show"),
 ]

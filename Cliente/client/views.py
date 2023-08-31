@@ -21,27 +21,56 @@ class PaginaInicial(TemplateView):
         else:
             context["api_info"] = {"nome": "Null", "version": "0.0"}
         return context
-    
+
 class CadastrarPagamentoView(TemplateView):
     template_name = 'client/pagamentos/create.html'
     pagtesouro_servico = None
+    helper_servico = None
 
-    def __init__(self, pagtesouro_servico, *args, **kwargs):
+    def __init__(self, pagtesouro_servico, helper_servico, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.pagtesouro_servico = pagtesouro_servico
+        self.helper_servico = helper_servico
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {"show_form": True})
+        result_dict = {
+            "show_form": True,
+            "taxas": self.helper_servico.getVestibularTaxas(),
+        }
+        return render(request, self.template_name, result_dict)
 
     def post(self, request, *args, **kwargs):
-        result_dict = {
-            "show_form": False, 
-            "show_post_msg": True, 
-            "pagamento": {
-                "idPagamento": "1123jklfdsFhf",
-                "sessao": "12345-456789-456456-456456"
+
+        input = request.POST.items()
+        dataSanitized = self.pagtesouro_servico.getSanitizedData(request)
+
+        api_response = self.pagtesouro_servico.post_solicitacao_pagamento(dataSanitized, sanitize=False)
+
+        pagamento = None
+        if (api_response):
+            pagamento = self.helper_servico.savePagamentoModelFromApiResponse(payload=dataSanitized, api_response=api_response)
+
+        if (pagamento):
+            result_dict = {
+                "show_form": False,
+                "show_post_msg": True,
+                "pagamento": {
+                    "idPagamento": str(pagamento.idPagamento),
+                    "sessao": str(pagamento.idSessao)
+                },
+                "input": input
             }
-        }
+        else:
+            result_dict = {
+                "show_form": True,
+                "show_post_msg": True,
+                "pagamento": {
+                    "idPagamento": "Erro",
+                    "sessao": "Erro"
+                },
+                "input": input
+            }
+
         return render(request, self.template_name, result_dict)
 
 
