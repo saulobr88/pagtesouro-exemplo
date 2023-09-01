@@ -35,8 +35,9 @@ class HelperService:
         query_params = parse_qs(parsed_url.fragment)
 
         # Obtém o valor de 'idSessao' se estiver presente
-        if 'idSessao' in query_params:
-            return query_params['idSessao'][0]
+        chave = '/pagamento?idSessao'
+        if chave in query_params:
+            return query_params[chave][0]
         else:
             return ''
 

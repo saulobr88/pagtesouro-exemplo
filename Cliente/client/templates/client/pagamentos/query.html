@@ -3,4 +3,74 @@
 {% block conteudo %}
 <h3>Consultar Pagamento</h3>
 
+<form class="w-full max-w-lg" method="GET">
+    <div class="flex items-center py-2">
+        <input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            name="q"
+            id="grid-q"
+            type="text"
+            placeholder="idPagamento ou CPF ou CNPJ"
+            {% if request.GET.q %}value="{{ request.GET.q }}"{% endif %}
+        />
+        <button class="ml-3 shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded" type="submit">
+            Pesquisar
+        </button>
+    </div>
+  </form>
+
+{% if pagamentos.count > 0 %}
+<div class="flex flex-col">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <div>
+            <p>
+                Total de {{ pagamentos.count }}
+            </p>
+          </div>
+          <table class="min-w-full text-left text-sm font-light">
+            <thead class="border-b font-medium dark:border-neutral-500">
+              <tr>
+                <th scope="col" class="px-6 py-4">idPagamento</th>
+                <th scope="col" class="px-6 py-4">nomeContribuinte</th>
+                <th scope="col" class="px-6 py-4">valorPrincipal</th>
+                <th scope="col" class="px-6 py-4">situacao_codigo</th>
+                <th scope="col" class="px-6 py-4">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for pagamento in pagamentos %}
+                <tr
+                    class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
+                >
+                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ pagamento.idPagamento }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{ pagamento.nomeContribuinte }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{ pagamento.valorPrincipal }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{ pagamento.situacao_codigo }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">
+                        <a href="{% url 'show' pagamento.idPagamento %}" >detalhes</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if request.GET.q and pagamentos.count <= 0  %}
+<div class="flex flex-col">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+                <h3>Nenhum resultado encontrado</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
 {% endblock %}

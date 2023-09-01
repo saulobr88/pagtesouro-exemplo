@@ -125,5 +125,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 PAGTESOURO_CLIENT = {
     'API_BASE_URL': 'http://localhost:8001/api',
-    'JWT_TOKEN_ACCESS': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzNTczODU1LCJpYXQiOjE2OTM0ODc0NTUsImp0aSI6ImIzN2Y2MjQwZTUyMjQ4NDc4MzIwN2VkZGNjMTUyYWE3IiwidXNlcl9pZCI6Mn0.zwY6Sq62cspYJoaqbLYJ3ar6PHfFGHMLd4d9XwSFFTo',
+    'JWT_TOKEN_ACCESS': 'eh preciso gerar um token JWT antes de subir a aplicação cliente',
 }

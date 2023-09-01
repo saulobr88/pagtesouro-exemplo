@@ -1,5 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.db import models
+from django.http import Http404
+
+from .models import Pagamento
 
 # Create your views here.
 class PaginaInicial(TemplateView):
@@ -82,9 +86,18 @@ class ConsultarPagamentoView(TemplateView):
         super().__init__(*args, **kwargs)
         self.pagtesouro_servico = pagtesouro_servico
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
+    def get(self, request):
+        # Obtém o parâmetro 'q' da URL
+        q = request.GET.get('q')
+
+        # Realiza a consulta no banco de dados para buscar Pagamentos que correspondem ao 'q'
+        if not q:
+            q = '#########'
+
+        pagamentos = Pagamento.objects.filter(models.Q(cnpjCpf__icontains=q) | models.Q(idPagamento__icontains=q))
+
+        # Renderiza o template com os resultados da consulta
+        return render(request, self.template_name, {'pagamentos': pagamentos})
 
 class ExibirPagamentoView(TemplateView):
     template_name = 'client/pagamentos/show.html'
@@ -94,6 +107,12 @@ class ExibirPagamentoView(TemplateView):
         super().__init__(*args, **kwargs)
         self.pagtesouro_servico = pagtesouro_servico
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
+    def get(self, request, id_pagamento):
+        pagamento = None
+        if id_pagamento:
+            try:
+                pagamento = Pagamento.objects.get(idPagamento=id_pagamento)
+            except Exception as e:
+                pagamento = None
+
+        return render(request, self.template_name, {'pagamento': pagamento})

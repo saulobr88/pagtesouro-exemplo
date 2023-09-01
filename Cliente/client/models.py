@@ -28,3 +28,9 @@ class Pagamento(models.Model):
 
     def __str__(self):
         return "{} - {} ({})".format(self.idPagamento, self.dataCriacao, self.situacao_codigo)
+
+    def getTotalValores(self):
+        totalPositivo = float(self.valorPrincipal) + float(self.valorMulta)  + float(self.valorJuros) + float(self.valorOutrosAcrescimos)
+        totalNegativo = float(self.valorDescontos) + float(self.valorOutrasDeducoes)
+
+        return totalPositivo - totalNegativo

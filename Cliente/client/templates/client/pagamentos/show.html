@@ -3,4 +3,168 @@
 {% block conteudo %}
 <h3>Exibir Pagamento</h3>
 
+{% if pagamento %}
+<div class="flex items-center justify-center">
+    <div class="w-3/5 bg-white shadow-lg">
+        <div class="flex justify-between p-4">
+            <div>
+                <h1 class="text-1xl italic font-extrabold tracking-widest text-indigo-500">
+                    idPagamento: {{ pagamento.idPagamento }}
+                </h1>
+                <p class="text-base">
+                    Sessão: {{ pagamento.idSessao }}
+                </p>
+                <p class="text-base">
+                    cnpjCpf: {{ pagamento.cnpjCpf }}
+                </p>
+                <p class="text-base">
+                    nomeContribuinte: {{ pagamento.nomeContribuinte }}
+                </p>
+            </div>
+
+        </div>
+        <div class="w-full h-0.5 bg-indigo-500"></div>
+        <div class="flex justify-between p-4">
+            <div>
+                <h6 class="font-bold">Situação : <span class="text-sm font-medium"> {{ pagamento.situacao_codigo }}</span></h6>
+                <h6 class="font-bold">Atualizado em : <span class="text-sm font-medium"> {{ pagamento.situacao_dataHora }}</span></h6>
+                <h6 class="font-bold">Criado em : <span class="text-sm font-medium"> {{ pagamento.dataCriacao }}</span></h6>
+            </div>
+            <div class="w-40">
+                <div class="text-sm">
+                    <span class="font-bold">codigoServico : </span> <span class="text-sm font-medium"> {{ pagamento.codigoServico }}</span>
+                    <span class="font-bold">referencia : </span><span class="text-sm font-medium">{{ pagamento.referencia }} </span>
+                    <span class="font-bold">competencia : </span><span class="text-sm font-medium">{{ pagamento.competencia }}</span>
+                </div>
+            </div>
+            <div class="w-40">
+                <div class="text-sm">
+                    <span class="font-bold">nomePSP : </span> <span class="text-sm font-medium"> {{ pagamento.nomePSP }}</span>
+                    <span class="font-bold">transacaoPSP : </span><span class="text-sm font-medium">{{ pagamento.transacaoPSP }} </span>
+                    <span class="font-bold">tipoPagamentoEscolhido : </span><span class="text-sm font-medium">{{ pagamento.tipoPagamentoEscolhido }}</span>
+                </div>
+            </div>
+            <div></div>
+        </div>
+        <div class="flex justify-center p-4">
+            <div class="border-b border-gray-200 shadow">
+                <table class="">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-xs text-gray-500 ">
+                                Item
+                            </th>
+                            <th class="px-4 py-2 text-xs text-gray-500 ">
+                                Subtotal
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        <tr class="whitespace-nowrap">
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                    valorPrincipal
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ pagamento.valorPrincipal }}
+                            </td>
+                        </tr>
+                        <tr class="whitespace-nowrap">
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                    valorDescontos
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ pagamento.valorDescontos  }}
+                            </td>
+                        </tr>
+                        <tr class="border-b-2 whitespace-nowrap">
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                    valorOutrasDeducoes
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ pagamento.valorOutrasDeducoes  }}
+                            </td>
+                        </tr>
+                        <tr class="border-b-2 whitespace-nowrap">
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                    valorMulta
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ pagamento.valorMulta  }}
+                            </td>
+                        </tr>
+                        <tr class="border-b-2 whitespace-nowrap">
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                    valorJuros
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ pagamento.valorJuros  }}
+                            </td>
+                        </tr>
+                        <tr class="border-b-2 whitespace-nowrap">
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                    valorOutrosAcrescimos
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ pagamento.valorOutrosAcrescimos  }}
+                            </td>
+                        </tr>
+                        <!--end tr-->
+                        <tr class="text-white bg-gray-800">
+                            <td class="text-sm font-bold"><b>Total</b></td>
+                            <td class="text-sm font-bold"><b>
+                                {{ pagamento.getTotalValores }}
+                            </b></td>
+                        </tr>
+                        <!--end tr-->
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="flex justify-between p-4">
+            <div>
+                <h3 class="text-lg">Links</h3>
+                <ul class="text-xs list-disc list-inside">
+                    <li>
+                        <span class="font-bold">urlNotificacao : </span>
+                        <a href="{{ pagamento.urlNotificacao }}">{{ pagamento.urlNotificacao }}</a>
+                    </li>
+                    <li>
+                        <span class="font-bold">proximaUrl : </span>
+                        <a href="{{ pagamento.proximaUrl }}" >{{ pagamento.proximaUrl }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="w-full h-0.5 bg-indigo-500"></div>
+
+    </div>
+</div>
+
+{% endif %}
+
+{% if not pagamento  %}
+<div class="flex flex-col">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+                <h3>Pagamento não encontrado</h3>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}
