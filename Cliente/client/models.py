@@ -25,6 +25,7 @@ class Pagamento(models.Model):
     transacaoPSP = models.CharField(max_length=255, null=True, blank=True, verbose_name="Identificação do pagamento no PSP")
     situacao_codigo = models.CharField(max_length=255, null=True, blank=True, verbose_name="Situação do pagamento")
     situacao_dataHora = models.CharField(max_length=255, null=True, blank=True, verbose_name="Atualização da situação do pgamento")
+    refetch = models.BooleanField(default=False, verbose_name="Bsucar atualizações da API")
 
     def __str__(self):
         return "{} - {} ({})".format(self.idPagamento, self.dataCriacao, self.situacao_codigo)

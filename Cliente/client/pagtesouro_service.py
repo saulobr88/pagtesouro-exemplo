@@ -44,8 +44,8 @@ class PagTesouroService:
             "valorMulta": "0",
             "valorJuros": "0",
             "valorOutrosAcrescimos": "0",
-            "modoNavegacao": "2",
-            "urlNotificacao": "https://valpagtesouro.tesouro.gov.br/api/simulador/ug/notificacao"
+            "modoNavegacao": "2", # 1 = mesma aba do sistema cliente; 2 = numa nova aba do navegador.
+            "urlNotificacao": request.build_absolute_uri('/notificacao/')
         }
 
     def get_index_request(self):
@@ -70,6 +70,16 @@ class PagTesouroService:
         response = requests.post(url, headers=self.getHeaders(), data=data)
 
         if response.status_code == HTTPStatus.CREATED:
+            return response.json()
+        else:
+            # Trate os erros de acordo com suas necessidades
+            raise Exception(f'Erro na requisição GET: {response.status_code}')
+
+    def get_consulta_pagamento(self, idPagamento):
+        url = self.getBaseUrl() + '/gru/pagamentos/' + idPagamento
+        response = requests.get(url, headers=self.getHeaders())
+
+        if response.status_code == HTTPStatus.OK:
             return response.json()
         else:
             # Trate os erros de acordo com suas necessidades

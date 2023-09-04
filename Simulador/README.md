@@ -2,7 +2,7 @@
 
 Aplicação que simula a API do PagTesouro
 
-# Como usar
+## Como usar
 
 1. clonar o repositório
 2. Criar o virtual enviroment (`python -m venv venv`)
@@ -10,10 +10,14 @@ Aplicação que simula a API do PagTesouro
 4. Se o arquivo `db.sqlite3` não existir, devem ser executadas as migrations (`python manage.py migrate`)
 5. Executar a aplicação (`python manage.py runserver 8001`), preferencialmente em uma porta diferente da porta padrão.
 
-# Usuários
+## Usuários
 
 | Nome  | Senha        | Descrição                                 |
 | ----- | ------------ | ----------------------------------------- |
 | admin | admin        | Superuser. Possui acesso ao painel /admin |
 | user1 | User1@123456 | Usuário comum da aplicação                |
 | user2 | User2@123456 | Usuário comum da aplicação                |
+
+## Postman Collection
+
+Os exemplos de requisições podem ser encontrados no arquivo `Simulador.postman_collection.json`

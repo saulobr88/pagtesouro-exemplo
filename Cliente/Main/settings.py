@@ -9,12 +9,16 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+#load_dotenv(dotenv_path)
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -124,6 +128,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 PAGTESOURO_CLIENT = {
-    'API_BASE_URL': 'http://localhost:8001/api',
-    'JWT_TOKEN_ACCESS': 'eh preciso gerar um token JWT antes de subir a aplicação cliente',
+    'API_BASE_URL': str(os.getenv('API_BASE_URL')),
+    'JWT_TOKEN_ACCESS': str(os.getenv('JWT_TOKEN_ACCESS')),
 }

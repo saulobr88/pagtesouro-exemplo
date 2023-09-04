@@ -1,7 +1,12 @@
+import json
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from django.db import models
+from django.http import JsonResponse
+from django.views import View
 from django.http import Http404
+from django.db import models
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Pagamento
 
@@ -115,4 +120,42 @@ class ExibirPagamentoView(TemplateView):
             except Exception as e:
                 pagamento = None
 
+        if (pagamento and pagamento.refetch):
+            pagamentoJson = self.pagtesouro_servico.get_consulta_pagamento(pagamento.idPagamento)
+            pagamento.tipoPagamentoEscolhido = pagamentoJson['tipoPagamentoEscolhido']
+            pagamento.nomePSP = pagamentoJson['nomePSP']
+            pagamento.transacaoPSP = pagamentoJson['transacaoPSP']
+            pagamento.situacao_codigo = pagamentoJson['situacao']['codigo']
+            pagamento.situacao_dataHora = pagamentoJson['situacao']['data']
+            pagamento.refetch = False
+            pagamento.save()
+
         return render(request, self.template_name, {'pagamento': pagamento})
+
+
+class ReceberNotificacaoPagamentoView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request):
+        # Parse do JSON da requisição
+        try:
+            data = json.loads(request.body)
+            id_pagamento = data.get('idPagamento')
+        except json.JSONDecodeError:
+            return JsonResponse({"mensagem": "Requisição JSON inválida."}, status=400)
+
+        # Verifique se existe um Pagamento com o idPagamento informado
+        try:
+            pagamento = Pagamento.objects.get(idPagamento=id_pagamento)
+            pagamento.situacao_dataHora = data.get('dataHora')
+            pagamento.refetch = True
+            pagamento.save()
+
+            print('Pagamento após o save')
+            print(pagamento)
+
+            return JsonResponse({"mensagem": "Pagamento encontrado.", "pagamento": pagamento.idPagamento}, status=200)
+        except Pagamento.DoesNotExist:
+            return JsonResponse([{"codigo": 404, "descricao":"Pagamento não encontrado."}], status=404)
