@@ -127,6 +127,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CSRF_TRUSTED_ORIGINS = ['http://*.127.0.0.1', 'http://*localhost']
+
 PAGTESOURO_CLIENT = {
     'API_BASE_URL': str(os.getenv('API_BASE_URL')),
     'JWT_TOKEN_ACCESS': str(os.getenv('JWT_TOKEN_ACCESS')),
